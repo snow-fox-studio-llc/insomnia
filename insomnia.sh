@@ -2,10 +2,14 @@
 
 set -e
 
-apt-get update
-apt-get full-upgrade
+export DEBIAN_FRONTEND=noninteractive
+export USERNAME=snowfoxstudio
 
-USERNAME=snowfoxstudio
+sleep 60
+apt-get update
+sleep 30
+apt-get full-upgrade -y
+sleep 30
 
 # Create user and immediately expire password to force a change on login
 useradd --create-home --shell "/bin/bash" --groups sudo "${USERNAME}"
@@ -32,12 +36,11 @@ if sshd -t -q; then systemctl restart sshd; fi
 ufw default deny incoming
 ufw default allow outgoing
 ufw allow ssh
-ufw allow http
 ufw allow https
-ufw enable
+ufw --force enable
 
 # Installing Docker
-apt-get install ca-certificates curl
+apt-get install -y ca-certificates curl
 install -m 0755 -d /etc/apt/keyrings
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
 chmod a+r /etc/apt/keyrings/docker.asc
@@ -46,4 +49,4 @@ echo \
 	$(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
 	sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 apt-get update
-apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
