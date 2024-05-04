@@ -15,6 +15,11 @@ resource "digitalocean_droplet" "default" {
         agent= true
     }
     
+    provisioner "file" {
+        source="./docker-compose.yaml"
+        destination="/root/docker-compose.yaml"
+    }
+
     provisioner "remote-exec" {
         script = "./insomnia.sh"
     }

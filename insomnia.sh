@@ -39,6 +39,15 @@ ufw allow ssh
 ufw allow https
 ufw --force enable
 
+# Unattended upgrades
+apt-get install -y unattended-upgrades
+
+# Tailscale
+curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/jammy.noarmor.gpg | sudo tee /usr/share/keyrings/tailscale-archive-keyring.gpg >/dev/null
+curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/jammy.tailscale-keyring.list | sudo tee /etc/apt/sources.list.d/tailscale.list
+apt-get update
+apt-get install -y tailscale
+
 # Installing Docker
 apt-get install -y ca-certificates curl
 install -m 0755 -d /etc/apt/keyrings
@@ -52,7 +61,4 @@ apt-get update
 apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
 # Insmonia
-apt-get install git
-git clone https://github.com/snow-fox-studio-llc/insomnia.git
-cd insomnia
 docker compose up -d
