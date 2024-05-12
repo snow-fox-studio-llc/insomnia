@@ -5,11 +5,11 @@ set -e
 export DEBIAN_FRONTEND=noninteractive
 export USERNAME=snowfoxstudio
 
-sleep 60
+sleep 120
 apt-get update
-sleep 30
+sleep 60
 apt-get full-upgrade -y
-sleep 30
+sleep 60
 
 # Create user and immediately expire password to force a change on login
 useradd --create-home --shell "/bin/bash" --groups sudo "${USERNAME}"
@@ -36,17 +36,16 @@ if sshd -t -q; then systemctl restart sshd; fi
 ufw default deny incoming
 ufw default allow outgoing
 ufw allow ssh
+ufw allow http
 ufw allow https
+ufw allow 8000
 ufw --force enable
 
 # Unattended upgrades
 apt-get install -y unattended-upgrades
 
 # Tailscale
-curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/jammy.noarmor.gpg | sudo tee /usr/share/keyrings/tailscale-archive-keyring.gpg >/dev/null
-curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/jammy.tailscale-keyring.list | sudo tee /etc/apt/sources.list.d/tailscale.list
-apt-get update
-apt-get install -y tailscale
+curl -fsSL https://tailscale.com/install.sh | sh
 
 # Installing Docker
 apt-get install -y ca-certificates curl
@@ -60,5 +59,5 @@ echo \
 apt-get update
 apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
-# Insmonia
-docker compose up -d
+# Coolify
+curl -fsSL https://cdn.coollabs.io/coolify/install.sh | bash
