@@ -25,7 +25,7 @@ chmod 0600 "${home_directory}/.ssh/authorized_keys"
 chown --recursive "${USERNAME}":"${USERNAME}" "${home_directory}/.ssh"
 
 # Disable root SSH login with password
-sed --in-place 's/^PermitRootLogin.*/PermitRootLogin no/g' /etc/ssh/sshd_config
+sed --in-place 's/^PermitRootLogin.*/PermitRootLogin prohibit-password/g' /etc/ssh/sshd_config
 if sshd -t -q; then systemctl restart sshd; fi
 
 # Disable password SSH login
@@ -38,6 +38,7 @@ ufw default allow outgoing
 ufw allow ssh
 ufw allow http
 ufw allow https
+ufw allow 6001
 ufw allow 8000
 ufw --force enable
 

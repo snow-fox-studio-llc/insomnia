@@ -50,14 +50,20 @@ resource "digitalocean_firewall" "web" {
 
     outbound_rule {
         protocol         = "tcp"
+        port_range       = "22"
+        destination_addresses = ["0.0.0.0/0", "::/0"]
+    }
+
+    outbound_rule {
+        protocol         = "tcp"
         port_range       = "80"
-        estination_addresses = ["0.0.0.0/0", "::/0"]
+        destination_addresses = ["0.0.0.0/0", "::/0"]
     }
 
     outbound_rule {
         protocol         = "tcp"
         port_range       = "443"
-        estination_addresses = ["0.0.0.0/0", "::/0"]
+        destination_addresses = ["0.0.0.0/0", "::/0"]
     }
 
     outbound_rule {
